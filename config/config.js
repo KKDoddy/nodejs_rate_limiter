@@ -6,7 +6,7 @@ const dbConfigGenerator = (databaseName) => ({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: databaseName,
-  host: process.env.HOST,
+  host: process.env.PSQL_HOST || "localhost",
   dialect: "postgres",
   logging: false,
 });

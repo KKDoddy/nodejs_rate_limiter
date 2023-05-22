@@ -1,14 +1,8 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
 import Sequelize from "sequelize";
 import configuration from "../config/config.js";
+import usersPlansDefinition from "./users_plans.js";
+import usersDefinition from "./users.js";
 
-const __filename = fileURLToPath(import.meta.url);
-
-const __dirname = path.dirname(__filename);
-
-const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
 const config = configuration[env];
 const db = {};
@@ -25,19 +19,8 @@ if (config.use_env_variable) {
   );
 }
 
-fs.readdirSync(__dirname)
-  .filter((file) => {
-    return (
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
-    );
-  })
-  .forEach((file) => {
-    const model = require(path.join(__dirname, file))(
-      sequelize,
-      Sequelize.DataTypes
-    );
-    db[model.name] = model;
-  });
+db["Users"] = usersDefinition(sequelize, Sequelize.DataTypes);
+db["Users_Plans"] = usersPlansDefinition(sequelize, Sequelize.DataTypes);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

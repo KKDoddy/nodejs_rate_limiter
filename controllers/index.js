@@ -1,4 +1,3 @@
-import { sendSmsNotificaiton } from "./smsNotificationsController.js";
-import { sendEmailNotificaiton } from "./emailNotificationsController.js";
-
-export { sendSmsNotificaiton, sendEmailNotificaiton };
+export { sendSmsNotificaiton } from "./smsNotificationsController";
+export { sendEmailNotificaiton } from "./emailNotificationsController";
+export { login, logout } from "./authController";

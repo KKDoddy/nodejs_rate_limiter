@@ -1,16 +1,19 @@
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import models from "../models";
 
 dotenv.config();
 
+const { Users, Users_Plans } = models;
+
 const verifyToken = async (req, res, next) => {
   try {
-    const access_token = req.header("access_token");
-    const verify = jwt.verify(access_token, process.env.JWT_SECRET);
-    const userExists = {
-      id: 1,
-      email: "example@example.com",
-    };
+    const authorization = req.headers["authorization"];
+    const verify = jwt.verify(authorization, process.env.JWT_SECRET);
+    const userExists = await Users.findOne({
+      where: { id: verify.id },
+      include: Users_Plans,
+    });
     if (userExists) {
       req.user = userExists;
       return next();
@@ -22,9 +25,10 @@ const verifyToken = async (req, res, next) => {
   } catch (error) {
     return res.status(400).json({
       status: 400,
-      error: "Malformed/ Incorrect security token ! Check token and try again.",
+      error:
+        "Malformed/ Incorrect security token! Please provide a valid 'authorization' key in the Headers section",
     });
   }
 };
 
-export default verifyToken;
+export { verifyToken };

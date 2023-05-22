@@ -1,6 +1,6 @@
 import Router from "express";
-import smsRoutes from "./smsRoutes.js";
-import emailRoutes from "./emailRoutes.js";
+import smsRoutes from "./smsRoutes";
+import emailRoutes from "./emailRoutes";
 
 const router = Router();
 

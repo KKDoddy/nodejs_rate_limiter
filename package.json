@@ -2,26 +2,34 @@
   "name": "nodejs_rate_limiter",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "repository": "https://github.com/KKDoddy/nodejs_rate_limiter.git",
   "author": "Doddy <kwizeradoddy@gmail.com>",
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.21.5",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
+    "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.0",
     "pg": "^8.11.0",
     "pg-hstore": "^2.3.4",
+    "redis": "^4.6.6",
     "sequelize": "^6.31.1"
   },
   "scripts": {
-    "start": "nodemon index.js"
+    "migrate": "npx sequelize-cli db:migrate",
+    "seed": "npx sequelize-cli db:seed:all",
+    "server": "nodemon --exec babel-node index.js",
+    "start": "yarn migrate; yarn seed; yarn server"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.5",
+    "@babel/register": "^7.21.0",
     "nodemon": "^2.0.22",
     "sequelize-cli": "^6.6.0"
   }

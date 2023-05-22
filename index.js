@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cluster from "cluster";
 import os from "os";
 import rateLimit from "express-rate-limit";
-import apiRoutes from "./routes/index.js";
+import apiRoutes from "./routes";
 
 dotenv.config();
 
@@ -14,14 +14,20 @@ const numberOfCpus = os.cpus().length;
 const app = express();
 
 const limiter = rateLimit({
-  windowMs: 2 * 60 * 1000,
-  max: 2,
+  windowMs: 60 * 60 * 1000,
+  max: 10,
 });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/api", limiter, apiRoutes);
+app.use("/api", apiRoutes);
+
+app.get("/", limiter, (req, res) => {
+  res.status(200).json({
+    message: "Welcome to this NodeJs rate limitter example",
+  });
+});
 
 app.get("*", limiter, (req, res) => {
   res.status(404).json({

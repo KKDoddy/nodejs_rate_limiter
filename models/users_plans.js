@@ -1,24 +1,9 @@
-"use strict";
-const { Model } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-  class Users_Plans extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Users_Plans.belongsTo(models.Users, {
-        foreignKey: "userId",
-      });
-    }
-  }
-  Users_Plans.init(
+const usersPlansDefinition = (sequelize, DataTypes) => {
+  const usersPlans = sequelize.define(
+    "Users_Plans",
     {
       maxRequestsPerMonth: DataTypes.INTEGER,
       startDate: DataTypes.DATE,
-      endDate: DataTypes.DATE,
       requestsPerSecond: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
     },
@@ -27,5 +12,14 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Users_Plans",
     }
   );
-  return Users_Plans;
+
+  usersPlans.associate = (models) => {
+    usersPlans.belongsTo(models.Users, {
+      foreignKey: "userId",
+    });
+  };
+
+  return usersPlans;
 };
+
+export default usersPlansDefinition;

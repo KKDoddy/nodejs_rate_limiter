@@ -1,21 +1,8 @@
-"use strict";
-const { Model } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-  class Users extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Users.hasOne(models.Users_Plans, {
-        foreignKey: "userId",
-        onDelete: "CASCADE",
-      });
-    }
-  }
-  Users.init(
+import { Model } from "sequelize";
+
+const usersDefinition = (sequelize, DataTypes) => {
+  const users = sequelize.define(
+    "Users",
     {
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
@@ -28,5 +15,15 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Users",
     }
   );
-  return Users;
+
+  users.associate = (models) => {
+    users.hasOne(models.Users_Plans, {
+      foreignKey: "userId",
+      onDelete: "CASCADE",
+    });
+  };
+
+  return users;
 };
+
+export default usersDefinition;

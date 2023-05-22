@@ -1,16 +1,57 @@
 version: "3.9"
 
 services:
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - webnet
+
+  database:
+    image: postgres:latest
+    networks:
+      - webnet
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: magogo
+      POSTGRES_DB: api_rate_limiting
+    volumes:
+      - database:/var/lib/postgresspql/data
+    ports:
+      - 5430:5432
+
   api:
-    # container_name: given_name
     build: .
-    # ports:
-    #   - 3000:3000
+    networks:
+      - webnet
+    environment:
+      PORT: 3000
+      DB_USERNAME: postgres
+      DB_PASSWORD: magogo
+      DEVELOP_DB_NAME: api_rate_limiting
+      PRODUCTION_DB_NAME: api_rate_limiting
+      TEST_DB_NAME: api_rate_limiting
+      JWT_SECRET: SECRET123
+      PSQL_HOST: database
+      REDIS_PORT: 6379
+      REDIS_HOST: redis
+    depends_on:
+      - database
+      - redis
+
   nginx:
     image: nginx:latest
     volumes:
-      - ./config:/etc/nginx/config
+      - ./config:/etc/nginx/conf.d
     depends_on:
       - api
     ports:
       - 3000:3000
+    networks:
+      - webnet
+
+volumes:
+  database:
+networks:
+  webnet:

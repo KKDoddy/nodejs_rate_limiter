@@ -3,7 +3,7 @@ import rateLimit from "express-rate-limit";
 
 dotenv.config();
 
-const verifyToken = async (req, res, next) => {
+const rateLimitFormatter = async (req, res, next) => {
   try {
     const userExists = req.user;
 
@@ -23,4 +23,4 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-export default verifyToken;
+export { rateLimitFormatter };
