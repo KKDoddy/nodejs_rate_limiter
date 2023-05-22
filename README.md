@@ -20,9 +20,6 @@ docker compose up
 ```
 Two seed users will be created in the database and the app will be listening on localhost, port 3000.
 
-## Postman requests collection
-Use [this link](https://api.postman.com/collections/9266054-ac2a4f9b-760f-4c40-b9b4-dd181ffec101?access_key=PMAT-01H12N1Q6V44MJS28BXYTTM0VK) and import a shared postman collection of available endpoints.
-
 ## Endpoints
 - **login:** /api/auth/login
 - **new email notification:** /api/notifications/sms/new
